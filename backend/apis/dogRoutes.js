@@ -20,15 +20,6 @@ dogRouter.get("/", getAllDogs);
 
 function responseError(response, errMessage) {
   let status = 500;
-  switch (errMessage) {
-    case Libs.Errors.CompanyValidation.CompanyDoesNotExists:
-      status = 404;
-      break;
-    case Libs.Errors.InvalidUrl:
-      status = 400;
-      break;
-  }
-
   return response.status(status).send(errMessage);
 }
 
@@ -92,3 +83,5 @@ async function getUserDogs(req, res) {
     res.send(dogsArray);
   } catch (error) {}
 }
+
+module.exports = dogRouter;

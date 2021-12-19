@@ -18,15 +18,6 @@ userRouter.delete("/:userId([A-Fa-f0-9]{24})", deleteUser);
 
 function responseError(response, errMessage) {
   let status = 500;
-  switch (errMessage) {
-    case Libs.Errors.CompanyValidation.CompanyDoesNotExists:
-      status = 404;
-      break;
-    case Libs.Errors.InvalidUrl:
-      status = 400;
-      break;
-  }
-
   return response.status(status).send(errMessage);
 }
 
@@ -81,3 +72,5 @@ async function getAllUsers(req, res) {
     return responseError(res, err.message);
   }
 }
+
+module.exports = userRouter;

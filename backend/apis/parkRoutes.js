@@ -18,15 +18,6 @@ parkRouter.get("/", getAllParks);
 
 function responseError(response, errMessage) {
   let status = 500;
-  switch (errMessage) {
-    case Libs.Errors.CompanyValidation.CompanyDoesNotExists:
-      status = 404;
-      break;
-    case Libs.Errors.InvalidUrl:
-      status = 400;
-      break;
-  }
-
   return response.status(status).send(errMessage);
 }
 
@@ -82,3 +73,5 @@ async function getAllParks(req, res) {
     return responseError(res, err.message);
   }
 }
+
+module.exports = parkRouter;

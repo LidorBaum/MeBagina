@@ -5,3 +5,5 @@ const path = resolve("path");
 const { baseURL, env } = require("../config");
 
 const chatRouter = express.Router();
+
+module.exports = chatRouter;

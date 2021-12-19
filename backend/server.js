@@ -47,13 +47,17 @@ if (process.env.NODE_ENV === "production") {
   };
   app.use(cors(corsOptions));
 }
-const companyRouter = require("./apis/company.routes");
-const authRouter = require("./apis/auth.routes");
-const employeeRouter = require("./apis/employee.routes");
-const connectSockets = require("./apis/socket/socket.routes");
+const userRouter = require("./apis/userRoutes");
+const authRouter = require("./apis/authRoutes");
+const dogRouter = require("./apis/dogRoutes");
+const parkRouter = require("./apis/parkRoutes");
+const chatRouter = require("./apis/chatRoutes");
+const connectSockets = require("./apis/socketRoutes");
 
-app.use("/api/company", companyRouter);
-app.use("/api/employee", employeeRouter);
+app.use("/api/user", userRouter);
+app.use("/api/dog", dogRouter);
+app.use("/api/park", parkRouter);
+app.use("/api/chat", chatRouter);
 app.use("/api/auth", authRouter);
 connectSockets(io);
 
