@@ -25,11 +25,11 @@ const DogSchema = Schema(
       type: String,
       default: "",
     },
-    currentParkId: {
-      type: Schema.Types.ObjectId,
-      default: null,
-      ref: "Park",
-    },
+    // currentDogId: {
+    //     type: Schema.Types.ObjectId,
+    //     default: null,
+    //     ref: "Dog",
+    // },
   },
   {
     collection: "dogs",
@@ -38,4 +38,35 @@ const DogSchema = Schema(
   }
 );
 
-exports.ParksModel = db.connection.model("Dog", ParkSchema);
+DogSchema.statics.createDog = function (dogObj) {
+  return this.create(dogObj);
+};
+
+DogSchema.statics.getAllDogs = function () {
+  return this.find({}).sort({ name: 1 }).exec();
+};
+
+DogSchema.statics.getById = function (dogId) {
+  return this.findById(dogId);
+};
+
+DogSchema.statics.deleteDog = function (dogId) {
+  return this.deleteOne({ _id: dogId });
+};
+
+DogSchema.statics.updateDog = function (dogObj) {
+  return this.findOneAndUpdate(
+    { _id: dogObj._id },
+    {
+      $set: {
+        name: dogObj.name,
+        breed: dogObj.breed,
+        photoUrl: dogObj.photoUrl,
+        additionalInfo: dogObj.additionalInfo,
+      },
+    },
+    { new: true }
+  );
+};
+
+exports.DogsModel = db.connection.model("Dog", DogSchema);

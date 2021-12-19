@@ -30,4 +30,32 @@ const UserSchema = Schema(
   }
 );
 
+UserSchema.statics.createUser = function (userObj) {
+  return this.create(userObj);
+};
+
+UserSchema.statics.getAllUsers = function () {
+  return this.find({}).sort({ name: 1 }).exec();
+};
+
+UserSchema.statics.getById = function (userId) {
+  return this.findById(userId);
+};
+
+UserSchema.statics.deleteUser = function (userId) {
+  return this.deleteOne({ _id: userId });
+};
+
+UserSchema.statics.updateUser = function (userObj) {
+  return this.findOneAndUpdate(
+    { _id: userObj._id },
+    {
+      $set: {
+        name: userObj.name,
+      },
+    },
+    { new: true }
+  );
+};
+
 exports.UsersModel = db.connection.model("User", UserSchema);

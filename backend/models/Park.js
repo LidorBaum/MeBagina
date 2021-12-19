@@ -39,4 +39,34 @@ const ParkSchema = Schema(
   }
 );
 
+ParkSchema.statics.updatePark = function (parkObj) {
+  return this.findOneAndUpdate(
+    { _id: parkObj._id },
+    {
+      $set: {
+        name: parkObj.name,
+        address: parkObj.address,
+        city: parkObj.city,
+      },
+    },
+    { new: true }
+  );
+};
+
+ParkSchema.statics.createPark = function (parkObj) {
+  return this.create(parkObj);
+};
+
+ParkSchema.statics.getAllParks = function () {
+  return this.find({}).sort({ name: 1 }).exec();
+};
+
+ParkSchema.statics.getById = function (parkId) {
+  return this.findById(parkId);
+};
+
+ParkSchema.statics.deletePark = function (parkId) {
+  return this.deleteOne({ _id: parkId });
+};
+
 exports.ParksModel = db.connection.model("Park", ParkSchema);
