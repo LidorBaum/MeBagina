@@ -4,8 +4,4 @@ const Joi = require("joi");
 //     return Boolean(!Joi.string().min(3).max(20).validate(companyName).error);
 // }
 
-module.exports = {
-  isValidCompanyName,
-  isValidUrl,
-  isValidName,
-};
+module.exports = {};

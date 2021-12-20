@@ -1,7 +1,6 @@
 const express = require("express");
 const Libs = require("../libs");
 const { ParkModel } = require("../models/Park");
-const path = resolve("path");
 const { baseURL, env } = require("../config");
 
 const parkRouter = express.Router();

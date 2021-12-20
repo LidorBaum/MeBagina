@@ -33,7 +33,7 @@ const ParkSchema = Schema(
     },
   },
   {
-    collection: "parks",
+    collection: "Parks",
     versionKey: false,
     timestamps: true,
   }
@@ -69,4 +69,4 @@ ParkSchema.statics.deletePark = function (parkId) {
   return this.deleteOne({ _id: parkId });
 };
 
-exports.ParksModel = db.connection.model("Park", ParkSchema);
+exports.ParkModel = db.connection.model("Park", ParkSchema);

@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
-import { CompanyContext } from "./contexts/CompanyContext";
-import { SnackbarContext } from "./contexts/SnackbarContext";
+import { UserContext } from "./contexts/UserContext";
 import { SnackbarHandlerContext } from "./contexts/SnackbarHandlerContext";
-import { Home } from "./pages/Home.js";
-import { Board } from "./pages/Board.js";
-import { LoginSignup } from "./pages/LoginSignup.js";
-import { CompanyProfile } from "./pages/CompanyProfile";
+import { SnackbarContext } from "./contexts/SnackbarContext";
 import { Header } from "./cmps/Header";
 import Cookies from "js-cookie";
 import Snackbar from "@mui/material/Snackbar";
@@ -14,15 +10,15 @@ import Alert from "@mui/material/Alert";
 import Slide from "@mui/material/Slide";
 
 function App() {
-  const [loggedCompany, setLoggedCompany] = useState(null);
+  const [loggedUser, setLoggedUser] = useState(null);
   const [snack, setSnack] = useState({});
   useEffect(() => {
-    if (loggedCompany) return;
-    if (Cookies.get("loggedCompany")) {
-      const jsonStr = Cookies.get("loggedCompany").slice(2);
-      setLoggedCompany(JSON.parse(jsonStr));
+    if (loggedUser) return;
+    if (Cookies.get("loggedUser")) {
+      const jsonStr = Cookies.get("loggedUser").slice(2);
+      setLoggedUser(JSON.parse(jsonStr));
     }
-  }, [loggedCompany]);
+  }, [loggedUser]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -55,7 +51,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <CompanyContext.Provider value={{ loggedCompany, setLoggedCompany }}>
+        <UserContext.Provider value={{ loggedUser, setLoggedUser }}>
           <SnackbarHandlerContext.Provider value={notificationHandler}>
             <SnackbarContext.Provider value={{ snack, setSnack }}>
               {
@@ -80,19 +76,26 @@ function App() {
                 </Snackbar>
               }
               <Header />
-              <div className="content">
-                <Switch>
-                  <Route path="/" component={Home} exact />
-                  <Route path="/login" component={LoginSignup} />
-                  <Route path="/board" component={Board} />
-                  <Route path="/company" component={CompanyProfile} />
-                  {/* <Route path="/" component={About} exact/> */}
-                </Switch>
-              </div>
-              {/* <Footer /> */}
+              <button onClick={() => notificationHandler.success("Snackbar")}>
+                Test Snack
+              </button>
+              {/* <div className="content">
+                                <Switch>
+                                    <Route path="/" component={Home} exact />
+                                    <Route
+                                        path="/login"
+                                        component={LoginSignup}
+                                    />
+                                    <Route path="/board" component={Board} />
+                                    <Route
+                                        path="/company"
+                                        component={CompanyProfile}
+                                    />
+                                </Switch>
+                            </div> */}
             </SnackbarContext.Provider>
           </SnackbarHandlerContext.Provider>
-        </CompanyContext.Provider>
+        </UserContext.Provider>
       </Router>
     </div>
   );

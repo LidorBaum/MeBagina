@@ -4,25 +4,25 @@ export default {
   login,
   logout,
   signup,
-  getUsers,
-  getById,
-  remove,
-  update,
+  getAllUsers,
+  getUserById,
+  removeUser,
+  updateUser,
 };
 
-function getUsers() {
+function getAllUsers() {
   return httpService.get("user");
 }
 
-function getById(userId) {
+function getUserById(userId) {
   return httpService.get(`user/${userId}`);
 }
-function remove(userId) {
+function removeUser(userId) {
   return httpService.delete(`user/${userId}`);
 }
 
-function update(user) {
-  return httpService.put(`user/${user._id}`, user);
+function updateUser(userObj) {
+  return httpService.put(`user/${userObj._id}`, userObj);
 }
 
 async function login(userCred) {

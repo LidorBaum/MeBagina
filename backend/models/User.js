@@ -30,6 +30,19 @@ const UserSchema = Schema(
   }
 );
 
+UserSchema.statics.linkDogToUser = function (userId, dogId) {
+  return this.findOneAndUpdate(
+    {
+      _id: userId,
+    },
+    {
+      $addToSet: {
+        dogsIds: dogId,
+      },
+    }
+  );
+};
+
 UserSchema.statics.createUser = function (userObj) {
   return this.create(userObj);
 };
@@ -58,4 +71,4 @@ UserSchema.statics.updateUser = function (userObj) {
   );
 };
 
-exports.UsersModel = db.connection.model("User", UserSchema);
+exports.UserModel = db.connection.model("User", UserSchema);

@@ -1,7 +1,6 @@
 const express = require("express");
 const Libs = require("../libs");
 const { UserModel } = require("../models/User");
-const path = resolve("path");
 const { baseURL, env } = require("../config");
 
 const userRouter = express.Router();
@@ -51,6 +50,7 @@ async function createUser(req, res) {
     const newUser = await UserModel.createUser(req.body);
     res.send(newUser);
   } catch (err) {
+    console.log(err);
     return responseError(res, err.message);
   }
 }

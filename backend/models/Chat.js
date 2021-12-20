@@ -48,4 +48,4 @@ const ChatSchema = Schema(
   }
 );
 
-exports.ChatsModel = db.connection.model("Chat", ChatSchema);
+exports.ChatModel = db.connection.model("Chat", ChatSchema);

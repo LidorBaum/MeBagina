@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import { CompanyContext } from "../contexts/CompanyContext.js";
+import { CompanyContext } from "../contexts/UserContext.js";
 import { SnackbarHandlerContext } from "../contexts/SnackbarHandlerContext";
 import Tooltip from "@mui/material/Tooltip";
 import Select from "react-select";

@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(cors(corsOptions));
 }
 const userRouter = require("./apis/userRoutes");
-const authRouter = require("./apis/authRoutes");
+// const authRouter = require("./apis/authRoutes");
 const dogRouter = require("./apis/dogRoutes");
 const parkRouter = require("./apis/parkRoutes");
 const chatRouter = require("./apis/chatRoutes");
@@ -58,7 +58,7 @@ app.use("/api/user", userRouter);
 app.use("/api/dog", dogRouter);
 app.use("/api/park", parkRouter);
 app.use("/api/chat", chatRouter);
-app.use("/api/auth", authRouter);
+// app.use("/api/auth", authRouter);
 connectSockets(io);
 
 app.get("/**", (req, res) => {

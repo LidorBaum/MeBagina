@@ -1,7 +1,7 @@
 const express = require("express");
 const Libs = require("../libs");
 const { DogModel } = require("../models/Dog");
-const path = resolve("path");
+const { UserModel } = require("../models/User");
 const { baseURL, env } = require("../config");
 
 const dogRouter = express.Router();
@@ -26,6 +26,7 @@ function responseError(response, errMessage) {
 async function createDog(req, res) {
   try {
     const newDog = await DogModel.createDog(req.body);
+    await UserModel.linkDogToUser(newDog.userId, newDog._id);
     res.send(newDog);
   } catch (err) {
     return responseError(res, err.message);

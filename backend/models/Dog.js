@@ -32,13 +32,13 @@ const DogSchema = Schema(
     // },
   },
   {
-    collection: "dogs",
+    collection: "Dogs",
     versionKey: false,
     timestamps: true,
   }
 );
 
-DogSchema.statics.createDog = function (dogObj) {
+DogSchema.statics.createDog = async function (dogObj) {
   return this.create(dogObj);
 };
 
@@ -69,4 +69,4 @@ DogSchema.statics.updateDog = function (dogObj) {
   );
 };
 
-exports.DogsModel = db.connection.model("Dog", DogSchema);
+exports.DogModel = db.connection.model("Dog", DogSchema);
