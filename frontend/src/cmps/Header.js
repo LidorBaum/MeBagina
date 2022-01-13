@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { useHistory } from "react-router-dom";
 import { SnackbarHandlerContext } from "../contexts/SnackbarHandlerContext";
+import { Button } from "@mui/material";
+import userService from "../services/userService";
 
 export function Header(props) {
   const { loggedUser, setLoggedUser } = useContext(UserContext);
@@ -11,13 +13,27 @@ export function Header(props) {
 
   useEffect(() => {}, [loggedUser]);
 
+  const onLogout = async () => {
+    const res = await userService.logout();
+    if (res?.error) return notificationHandler.error(res.error.message);
+    setLoggedUser(null);
+    history.push("/");
+  };
   // const onLogout = async () => {
   //   const res = await companyService.logoutCompany();
   //   if (res?.error) return notificationHandler.error(res.error.message);
   //   setLoggedCompany(null);
   //   history.push("/");
   // };
-  if (true) return <div>Header</div>;
+  if (true)
+    return (
+      <div>
+        Header
+        <Button onClick={onLogout} variant="contained">
+          Logout
+        </Button>
+      </div>
+    );
   // return (
   //   <div className="header">
   //     <NavLink to={"/"}>

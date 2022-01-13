@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { UserContext } from "./contexts/UserContext";
 import { SnackbarHandlerContext } from "./contexts/SnackbarHandlerContext";
 import { SnackbarContext } from "./contexts/SnackbarContext";
 import { Header } from "./cmps/Header";
+import { LoginSignup } from "./pages/LoginSignup";
 import Cookies from "js-cookie";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
@@ -79,20 +80,17 @@ function App() {
               <button onClick={() => notificationHandler.success("Snackbar")}>
                 Test Snack
               </button>
-              {/* <div className="content">
-                                <Switch>
-                                    <Route path="/" component={Home} exact />
-                                    <Route
-                                        path="/login"
-                                        component={LoginSignup}
-                                    />
-                                    <Route path="/board" component={Board} />
+              <div className="content">
+                <Switch>
+                  {/* <Route path="/" component={Home} exact /> */}
+                  <Route path="/login" component={LoginSignup} />
+                  {/* <Route path="/board" component={Board} />
                                     <Route
                                         path="/company"
                                         component={CompanyProfile}
-                                    />
-                                </Switch>
-                            </div> */}
+                                    /> */}
+                </Switch>
+              </div>
             </SnackbarContext.Provider>
           </SnackbarHandlerContext.Provider>
         </UserContext.Provider>

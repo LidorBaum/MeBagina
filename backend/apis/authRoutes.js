@@ -11,19 +11,19 @@ router.post("/logout", logout);
 function responseError(response, errMessage) {
   let status;
   switch (errMessage) {
-    case Libs.Errors.CompanyValidation.CompanyDoesNotExists:
-      status = 404;
-      break;
-    case Libs.Errors.TextValidation.InvalidCompanyName:
-    case Libs.Errors.InvalidUrl:
-      status = 400;
-      break;
-    case Libs.Errors.CompanyValidation.CompanyNameAlreadyExists:
-      status = 403;
-      break;
-    case Libs.Errors.CompanyValidation.CompanyPasswordNotMatch:
-      status = 401;
-      break;
+    // case Libs.Errors.CompanyValidation.CompanyDoesNotExists:
+    //   status = 404;
+    //   break;
+    // case Libs.Errors.TextValidation.InvalidCompanyName:
+    // case Libs.Errors.InvalidUrl:
+    //   status = 400;
+    //   break;
+    // case Libs.Errors.CompanyValidation.CompanyNameAlreadyExists:
+    //   status = 403;
+    //   break;
+    // case Libs.Errors.CompanyValidation.CompanyPasswordNotMatch:
+    //   status = 401;
+    //   break;
     default:
       status = 500;
       break;
@@ -32,17 +32,17 @@ function responseError(response, errMessage) {
   return response.status(status).send(errMessage);
 }
 async function login(req, res) {
-  const { companyId, password } = req.body;
+  const { email, password } = req.body;
   try {
-    const company = await authService.login(companyId, password);
-    req.session.company = company._id;
-    const returnedCompany = {
-      _id: company._id,
-      name: company.name,
-      logo: company.logo,
+    const user = await authService.login(email, password);
+    req.session.user = user._id;
+    const returnedUSer = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
     };
-    res.cookie("loggedCompany", returnedCompany);
-    res.send(returnedCompany);
+    res.cookie("loggedUser", returnedUSer);
+    res.send(returnedUSer);
   } catch (err) {
     return responseError(res, err.message);
   }
@@ -50,18 +50,17 @@ async function login(req, res) {
 
 async function signup(req, res) {
   try {
-    const { name, password } = req.body;
-    const companyObj = await authService.signup(name, password);
-    const companyId = companyObj._id;
-    const company = await authService.login(companyId, password);
-    const returnedCompany = {
-      _id: company._id,
-      name: company.name,
-      logo: company.logo,
+    const { email, name, password } = req.body;
+    await authService.signup(email, name, password);
+    const user = await authService.login(email, password);
+    const returnedUSer = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
     };
-    req.session.company = returnedCompany._id;
-    res.cookie("loggedCompany", returnedCompany);
-    res.send(returnedCompany);
+    req.session.user = returnedUSer._id;
+    res.cookie("loggedUser", returnedUSer);
+    res.send(returnedUSer);
   } catch (err) {
     return responseError(res, err.message);
   }

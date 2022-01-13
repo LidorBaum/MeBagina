@@ -9,6 +9,10 @@ const UserSchema = Schema(
       type: String,
       required: true,
     },
+    email: {
+      type: String,
+      required: true,
+    },
     password: {
       type: String,
       required: true,
@@ -47,6 +51,18 @@ UserSchema.statics.createUser = function (userObj) {
   return this.create(userObj);
 };
 
+UserSchema.statics.checkEmailAvailable = function (email) {
+  console.log(email, "email is ");
+  return this.findOne({ email: email });
+};
+
+UserSchema.statics.getByEmail = async function (email) {
+  console.log("getting by email");
+  const user = await this.findOne({ email: email });
+  console.log(user, "USER FROM EMAIL");
+  return user;
+};
+
 UserSchema.statics.getAllUsers = function () {
   return this.find({}).sort({ name: 1 }).exec();
 };
@@ -65,6 +81,7 @@ UserSchema.statics.updateUser = function (userObj) {
     {
       $set: {
         name: userObj.name,
+        email: userObj.email,
       },
     },
     { new: true }
