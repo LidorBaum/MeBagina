@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -13,22 +14,21 @@
    ScrollView,
    StatusBar,
    StyleSheet,
- 
    useColorScheme,
    View,
  } from 'react-native';
  import { Colors } from 'react-native-ui-lib';
  import { NavigationContainer } from '@react-navigation/native';
- import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
  import { I18nManager } from 'react-native';
- 
+  
  Colors.loadSchemes({
    light: {
      screenBG: 'transparent',
      textColor: Colors.grey10,
      moonOrSun: Colors.yellow30,
      mountainForeground: Colors.green30,
-     mountainBackground: Colors.green50
+     mountainBackground: Colors.green50,
    },
    dark: {
      screenBG: Colors.grey10,
@@ -124,12 +124,11 @@
                }
  
                // You can return any component that you like here!
-               return <FontAwesome5 name={iconName} solid={focused} size={size} color={color} />;
+               return <FontAwesome5 name={iconName} size={size} color={color} />;
              },
              tabBarActiveTintColor: 'tomato',
              tabBarInactiveTintColor: 'gray',
-             headerShown: false
- 
+             headerShown: false,
            })}
          >
            <Tab.Screen name="Home" component={HomeScreen} />
