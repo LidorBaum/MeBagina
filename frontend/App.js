@@ -19,9 +19,9 @@
  } from 'react-native';
  import { Colors } from 'react-native-ui-lib';
  import { NavigationContainer } from '@react-navigation/native';
- import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
  import { I18nManager } from 'react-native';
- 
+
  Colors.loadSchemes({
    light: {
      screenBG: 'transparent',
@@ -120,7 +120,7 @@
                    ? 'comments'
                    : 'comments';
                } else if (route.name === 'Settings') {
-                 iconName = focused ? 'paw-claws' : 'money-bill-1';
+                 iconName = focused ? 'clock' : 'clock';
                }
  
                // You can return any component that you like here!
