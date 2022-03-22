@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "147926405452",
+    "project_id": "mebagina-55711",
+    "storage_bucket": "mebagina-55711.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147926405452:android:ceab36b3d04c9b4a34ffe9",
+        "android_client_info": {
+          "package_name": "com.mebagina"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "147926405452-9nolh1ovp3t7jcf3bbaga64gq4lnkdrs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5Nm2RJ0NQGYVgc7bGCzBYFpiLpZcMBl0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "147926405452-9nolh1ovp3t7jcf3bbaga64gq4lnkdrs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
