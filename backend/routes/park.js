@@ -73,7 +73,6 @@ async function deletePark(req, res) {
 
 async function getAllParks(req, res) {
     const userId = req.get('userId');
-
     try {
         const parks = await parkHandler.getParks(userId);
         res.send(parks);

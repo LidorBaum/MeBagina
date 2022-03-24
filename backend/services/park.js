@@ -1,5 +1,6 @@
 function formatParkSummaryData(park, userId) {
     return {
+        _id: park._id,
         name: park.name,
         address: park.address,
         city: park.city,
@@ -9,7 +10,7 @@ function formatParkSummaryData(park, userId) {
         },
         image: park.image,
         dogs: (park.currentDogsIds || []).length,
-        favorite: (park.favUserIds || []).includes(userId),
+        isFavorite: (park.favUserIds || []).map(userId=>userId.toString()).includes(userId),
     };
 }
 
