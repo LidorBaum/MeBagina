@@ -93,4 +93,18 @@ ParkSchema.statics.deletePark = function (parkId) {
     return this.deleteOne({ _id: parkId });
 };
 
+ParkSchema.statics.addUserToPark = function (parkId, userId) {
+    return this.updateOne(
+        { _id: parkId },
+        { $addToSet: userId },
+    );
+};
+
+ParkSchema.statics.deleteUserFromPark = function (parkId) {
+    return this.updateOne(
+        { _id: parkId },
+        { $pull: userId },
+    );
+};
+
 exports.ParkModel = db.connection.model('Park', ParkSchema);
