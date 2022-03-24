@@ -60,6 +60,7 @@ async function getUserById(req, res) {
 }
 async function createUser(req, res) {
     try {
+      console.log(req.body, 'NEW USER OBJECT');
         const newUser = await UserModel.createUser(req.body);
         res.send(newUser);
     } catch (err) {
