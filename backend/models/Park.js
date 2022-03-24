@@ -100,7 +100,7 @@ ParkSchema.statics.addUserToPark = function (parkId, userId) {
     );
 };
 
-ParkSchema.statics.deleteUserFromPark = function (parkId) {
+ParkSchema.statics.deleteUserFromPark = function (parkId, userId) {
     return this.updateOne(
         { _id: parkId },
         { $pull: { favUserIds: userId } },

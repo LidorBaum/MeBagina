@@ -87,7 +87,7 @@ async function getAllParks(req, res) {
 
 async function addUserToPark(req, res) {
     const { parkId, userId } = req.params;
-
+    
     try {
         await parkHandler.addUserToPark(parkId, userId);
 
