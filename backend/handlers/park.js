@@ -9,6 +9,16 @@ async function getParks(userId) {
     });
 }
 
+function addUserToPark(parkId, userId) {
+    return ParkModel.addUserToPark(parkId, userId);
+}
+
+function deleteUserFromPark(parkId, userId) {
+    return ParkModel.deleteUserFromPark(parkId, userId);
+}
+
 module.exports = {
     getParks,
+    addUserToPark,
+    deleteUserFromPark,
 };
