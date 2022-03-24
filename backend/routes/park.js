@@ -1,7 +1,7 @@
 const express = require('express');
 const Libs = require('../libs');
+const parkHandler = require('../handlers/park');
 const { ParkModel } = require('../models/Park');
-const { baseURL, env } = require('../config');
 
 const parkRouter = express.Router();
 
@@ -23,6 +23,7 @@ function responseError(response, errMessage) {
 async function createPark(req, res) {
     try {
         const newPark = await ParkModel.createPark(req.body);
+
         res.send(newPark);
     } catch (err) {
         return responseError(res, err.message);
@@ -32,6 +33,7 @@ async function createPark(req, res) {
 async function updatePark(req, res) {
     try {
         const newParkObj = await ParkModel.updatePark(req.body);
+
         res.send(newParkObj);
     } catch (err) {
         return responseError(res, err.message);
@@ -39,9 +41,11 @@ async function updatePark(req, res) {
 }
 
 async function getParkById(req, res) {
+    const { parkId } = req.params;
+
     try {
-        const { parkId } = req.params;
         const park = await ParkModel.getById(parkId);
+
         res.send(park);
     } catch (error) {
         return response.status(status).send(errMessage);
@@ -49,15 +53,18 @@ async function getParkById(req, res) {
 }
 
 async function deletePark(req, res) {
+    const { parkId } = req.params;
+
     try {
-        const { parkId } = req.params;
         const result = await ParkModel.deletePark(parkId);
+
         if (result.deletedCount === 0) {
             return responseError(
                 res,
                 Libs.Errors.EmployeeValidation.EmployeeDoesNotExists
             );
         }
+
         return res.send();
     } catch (err) {
         return responseError(res, err.message);
@@ -65,8 +72,10 @@ async function deletePark(req, res) {
 }
 
 async function getAllParks(req, res) {
+    const userId = req.get('userId');
+
     try {
-        const parks = await ParkModel.getAllParks();
+        const parks = await parkHandler.getParks(userId);
         res.send(parks);
     } catch (err) {
         return responseError(res, err.message);

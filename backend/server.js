@@ -4,9 +4,16 @@ const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-
 const app = express();
 const http = require('http').createServer(app);
+
+const userRouter = require('./routes/user');
+const authRouter = require('./routes/auth');
+const dogRouter = require('./routes/dog');
+const parkRouter = require('./routes/park');
+const chatRouter = require('./routes/chat');
+const connectSockets = require('./routes/socket');
+
 const io = require('socket.io')(http, {
     cors: {
         origin: 'http://localhost:3000  ',
@@ -47,18 +54,13 @@ if (process.env.NODE_ENV === 'production') {
     };
     app.use(cors(corsOptions));
 }
-const userRouter = require('./apis/userRoutes');
-const authRouter = require('./apis/authRoutes');
-const dogRouter = require('./apis/dogRoutes');
-const parkRouter = require('./apis/parkRoutes');
-const chatRouter = require('./apis/chatRoutes');
-const connectSockets = require('./apis/socketRoutes');
 
 app.use('/api/user', userRouter);
 app.use('/api/dog', dogRouter);
 app.use('/api/park', parkRouter);
 app.use('/api/chat', chatRouter);
 app.use('/api/auth', authRouter);
+
 connectSockets(io);
 
 app.get('/**', (req, res) => {

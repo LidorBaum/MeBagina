@@ -46,6 +46,15 @@ const ParkSchema = Schema(
             // required: true,
             ref: 'Chat',
         },
+        favUserIds: {
+            type: [
+                {
+                    type: Schema.Types.ObjectId,
+                    ref: 'User',
+                },
+            ],
+            default: [],
+        },
     },
     {
         collection: 'Parks',
