@@ -4,23 +4,29 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Colors} from 'react-native-ui-lib';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+export function ParkPreview({
+  parkObj,
+  navi,
+  isLogged,
+  onPanToMarker,
+  onAddToFav,
+  onRemoveFromFav,
+}) {
+  const panToMarker = () => {
+    onPanToMarker(parkObj._id);
+  };
 
-export function ParkPreview({parkObj, navi, isLogged, onPanToMarker, onAddToFav, onRemoveFromFav}) {
-  const panToMarker = () =>{
-    onPanToMarker(parkObj._id)
-  }
+  const toggleFav = () => {
+    if (parkObj.isFavorite) removeFromFav();
+    else addToFav();
+  };
 
-  const toggleFav = () =>{
-    if(parkObj.isFavorite) removeFromFav();
-    else addToFav() 
-  }
-
-  const addToFav = () =>{
-    onAddToFav(parkObj._id)
-  }
-  const removeFromFav = () =>{
-    onRemoveFromFav(parkObj._id)
-  }
+  const addToFav = () => {
+    onAddToFav(parkObj._id);
+  };
+  const removeFromFav = () => {
+    onRemoveFromFav(parkObj._id);
+  };
   return (
     <View style={styles.parkPreviewCont}>
       <View style={styles.parkPreviewText}>
@@ -40,11 +46,13 @@ export function ParkPreview({parkObj, navi, isLogged, onPanToMarker, onAddToFav,
             color={Colors.mapMarker}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={!isLogged? () => navi.jumpTo('התחברות'): toggleFav}>
+        <TouchableOpacity
+          onPress={!isLogged ? () => navi.jumpTo('התחברות') : toggleFav}
+        >
           <MaterialCommunityIcons
-            name={parkObj.isFavorite? 'heart' : 'heart-outline'}
+            name={parkObj.isFavorite ? 'heart' : 'heart-outline'}
             size={30}
-            color={isLogged? 'tomato' : 'grey'}
+            color={isLogged ? 'tomato' : 'grey'}
           />
         </TouchableOpacity>
       </View>

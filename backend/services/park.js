@@ -10,7 +10,9 @@ function formatParkSummaryData(park, userId) {
         },
         image: park.image,
         dogs: (park.currentDogsIds || []).length,
-        isFavorite: (park.favUserIds || []).map(userId=>userId.toString()).includes(userId),
+        isFavorite: (park.favUserIds || [])
+            .map(userId => userId.toString())
+            .includes(userId),
     };
 }
 

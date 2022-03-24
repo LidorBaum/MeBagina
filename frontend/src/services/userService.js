@@ -8,7 +8,7 @@ export default {
   checkUserExistAndType,
   getFilteredUsers,
   getByFirebaseUID,
-  createUser
+  createUser,
 };
 
 function getFilteredUsers(filter = null) {

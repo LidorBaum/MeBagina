@@ -1,5 +1,5 @@
 import Axios from 'axios';
-const { baseURL } = require('../config');
+const {baseURL} = require('../config');
 // const { baseURL } = import('../config');
 // const baseURL  = 'http://192.168.1.20:4444'
 
@@ -20,12 +20,12 @@ export default {
   },
 };
 
-async function ajax(endpoint, method = 'get', data = null, userId= null) {
+async function ajax(endpoint, method = 'get', data = null, userId = null) {
   try {
     const axios = Axios.create({
       withCredentials: true,
       headers: {
-        userId: userId
+        userId: userId,
       },
     });
 

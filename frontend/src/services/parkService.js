@@ -11,14 +11,14 @@ export default {
   updateVasePrintedCount,
   getCustomerParks,
   addFavorite,
-  removeFavorite
+  removeFavorite,
 };
 
-async function addFavorite(parkId, userId){
-  return await httpService.post(`park/${parkId}/favorites/${userId}`)
+async function addFavorite(parkId, userId) {
+  return await httpService.post(`park/${parkId}/favorites/${userId}`);
 }
-async function removeFavorite(parkId, userId){
-  return await httpService.delete(`park/${parkId}/favorites/${userId}`)
+async function removeFavorite(parkId, userId) {
+  return await httpService.delete(`park/${parkId}/favorites/${userId}`);
 }
 
 async function getCustomerParks(customerId) {
@@ -59,5 +59,5 @@ function removePark(parkId) {
 }
 
 function getAllParks(userId) {
-  return httpService.get('park', null, userId );
+  return httpService.get('park', null, userId);
 }
