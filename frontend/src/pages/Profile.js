@@ -17,14 +17,7 @@ export function Profile() {
   }
 
   async function onAuthStateChanged(user) {
-    console.log(user?.uid, 'user after auth change');
     if (!user) dispatch(setLoggedUser(null));
-    else {
-      const userFromDB = await userService.getByFirebaseUID(user.uid);
-      if (userFromDB.error) console.log('error fetching from db');
-      // dispatch(setLoggedUser({ ...userFromDB, ...user }))
-      dispatch(setLoggedUser(userFromDB));
-    }
   }
 
   useEffect(() => {

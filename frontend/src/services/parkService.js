@@ -10,7 +10,16 @@ export default {
   updateVaseStatus,
   updateVasePrintedCount,
   getCustomerParks,
+  addFavorite,
+  removeFavorite
 };
+
+async function addFavorite(parkId, userId){
+  return await httpService.post(`park/${parkId}/favorites/${userId}`)
+}
+async function removeFavorite(parkId, userId){
+  return await httpService.delete(`park/${parkId}/favorites/${userId}`)
+}
 
 async function getCustomerParks(customerId) {
   return await httpService.get(`park/parks/${customerId}`);
@@ -49,6 +58,6 @@ function removePark(parkId) {
   return httpService.delete(`park/${parkId}`);
 }
 
-function getAllParks() {
-  return httpService.get('park');
+function getAllParks(userId) {
+  return httpService.get('park', null, userId );
 }

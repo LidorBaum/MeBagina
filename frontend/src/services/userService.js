@@ -8,6 +8,7 @@ export default {
   checkUserExistAndType,
   getFilteredUsers,
   getByFirebaseUID,
+  createUser
 };
 
 function getFilteredUsers(filter = null) {
@@ -34,7 +35,7 @@ function remove(userId) {
   return httpService.delete(`user/${userId}`);
 }
 
-function addUser(userObj) {
+function createUser(userObj) {
   return httpService.post('user', userObj);
 }
 

@@ -1,7 +1,7 @@
 import {SET_LOGGED_USER} from './actions';
 
 const initialState = {
-  loggedUser: {},
+  loggedUser: null,
 };
 
 function userReducer(state = initialState, action) {

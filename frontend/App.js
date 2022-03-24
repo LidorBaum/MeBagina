@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import {Colors} from 'react-native-ui-lib';
-import {I18nManager} from 'react-native';
-import {Provider} from 'react-redux';
-import {Store} from './src/redux/store';
-import {Navigator} from './src/pages/Navigator';
+import { Colors } from 'react-native-ui-lib';
+import { I18nManager } from 'react-native';
+import { Provider } from 'react-redux';
+import { Store } from './src/redux/store';
+import { Navigator } from './src/pages/Navigator';
+import auth from '@react-native-firebase/auth';
+import userService from './src/services/userService';
+import { useSelector, useDispatch } from 'react-redux';
 
 Colors.loadSchemes({
   light: {
@@ -30,9 +33,20 @@ Colors.loadSchemes({
 I18nManager.forceRTL(true);
 
 const App = () => {
+  const [firebaseUID, setFirebaseUID] = useState(null)
+
+  async function onAuthStateChanged(user) {
+    console.log(user, 'line 37 app');
+    setFirebaseUID(user?.uid)
+  }
+
+  useEffect(() => {
+    auth().onAuthStateChanged(onAuthStateChanged);
+  }, []);
+
   return (
     <Provider store={Store}>
-      <Navigator />
+      <Navigator firebaseUID={firebaseUID} />
     </Provider>
   );
 };

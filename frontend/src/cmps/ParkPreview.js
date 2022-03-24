@@ -4,7 +4,23 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Colors} from 'react-native-ui-lib';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export function ParkPreview({parkObj}) {
+
+export function ParkPreview({parkObj, navi, isLogged, onPanToMarker, onAddToFav, onRemoveFromFav}) {
+  const panToMarker = () =>{
+    onPanToMarker(parkObj._id)
+  }
+
+  const toggleFav = () =>{
+    if(parkObj.isFavorite) removeFromFav();
+    else addToFav() 
+  }
+
+  const addToFav = () =>{
+    onAddToFav(parkObj._id)
+  }
+  const removeFromFav = () =>{
+    onRemoveFromFav(parkObj._id)
+  }
   return (
     <View style={styles.parkPreviewCont}>
       <View style={styles.parkPreviewText}>
@@ -16,7 +32,7 @@ export function ParkPreview({parkObj}) {
         </Text>
       </View>
       <View style={styles.parkPreviewBtns}>
-        <TouchableOpacity onPress={() => console.log('pressed', parkObj._id)}>
+        <TouchableOpacity onPress={panToMarker}>
           <MaterialCommunityIcons
             style={{marginTop: 10, marginBottom: 10}}
             name={'google-maps'}
@@ -24,24 +40,14 @@ export function ParkPreview({parkObj}) {
             color={Colors.mapMarker}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => console.log('pressed', parkObj._id)}>
+        <TouchableOpacity onPress={!isLogged? () => navi.jumpTo('התחברות'): toggleFav}>
           <MaterialCommunityIcons
-            name={'heart-outline'}
+            name={parkObj.isFavorite? 'heart' : 'heart-outline'}
             size={30}
-            color={'tomato'}
+            color={isLogged? 'tomato' : 'grey'}
           />
         </TouchableOpacity>
       </View>
-      {/* <View>
-                <Image source={{ uri: parkObj.image }}
-                    resizeMode='cover'
-                    style={{
-                        width: 120,
-                        height: 120,
-                        borderRadius: 10,
-                    }}
-                    errorSource={require('../../assets/marker.png')} />
-            </View> */}
     </View>
   );
 }

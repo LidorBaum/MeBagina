@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {Colors} from 'react-native-ui-lib';
+import React, { useState, useEffect, useRef } from 'react';
+import { Colors } from 'react-native-ui-lib';
 import GetLocation from 'react-native-get-location';
 
 import {
@@ -12,11 +12,12 @@ import {
   useColorScheme,
 } from 'react-native';
 
-import {Text, Button, Image, Toast, View} from 'react-native-ui-lib'; //eslint-disable-line
+import { Text, Button, Image, Toast, View } from 'react-native-ui-lib'; //eslint-disable-line
 
-import MapView, {Callout, Marker} from 'react-native-maps';
+import MapView, { Callout, Marker } from 'react-native-maps';
 import parkService from '../services/parkService';
-import {ParkList} from '../cmps/ParkList';
+import { ParkList } from '../cmps/ParkList';
+import { useSelector, useDispatch } from 'react-redux';
 
 const mapstyle = [
   {
@@ -384,8 +385,11 @@ const mapstyle = [
   },
 ];
 
-export const Home = () => {
+export const Home = ({ navigation }) => {
+  const { loggedUser } = useSelector(state => state.userReducer);
+
   const markerRef = useRef(null);
+  const markersRefArr = useRef([])
   const mapRef = useRef(null);
   const [showToast, setToast] = useState(false);
   const [toastText, setToastText] = useState('');
@@ -395,17 +399,17 @@ export const Home = () => {
   };
   const [parks, setParks] = useState([]);
   const [markers, setMarkers] = useState([]);
-  const [center, setCenter] = useState({lat: 32.0153719, lng: 24.7457522});
+  const [center, setCenter] = useState({ lat: 32.0153719, lng: 24.7457522 });
   const getUserLocation = () => {
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
       timeout: 15000,
     })
       .then(location => {
-        setCenter({lat: location.latitude, lng: location.longitude});
+        setCenter({ lat: location.latitude, lng: location.longitude });
       })
       .catch(error => {
-        const {code, message} = error;
+        const { code, message } = error;
         console.warn(code, message);
       });
   };
@@ -413,20 +417,21 @@ export const Home = () => {
   useEffect(() => {
     getUserLocation();
     const getParks = async () => {
-      const res = await parkService.getAllParks();
+      // console.log('logged user 420', loggedUser);
+      const res = await parkService.getAllParks(loggedUser?._id);
+      console.log(res);
       if (res.error) return notify(res.error.message);
       setParks([...res]);
       let parksLocs = [];
       res.map(park => {
-        parksLocs.push({lat: park.coordinates.lat, lng: park.coordinates.lng});
+        parksLocs.push({ lat: park.coordinates.lat, lng: park.coordinates.lng });
       });
       setMarkers(parksLocs);
     };
     getParks();
-  }, []);
+  }, [loggedUser]);
 
   const onShowCallout = () => {
-    console.log(markerRef.current);
     markerRef.current.showCallout();
     mapRef.current.animateToRegion({
       latitude: center.lat,
@@ -435,6 +440,47 @@ export const Home = () => {
       longitudeDelta: 0.0121,
     });
   };
+
+  const onPanToMarker = (parkId) => {
+    const index = parks.findIndex(park => park._id === parkId)
+    markersRefArr.current[index].showCallout()
+    mapRef.current.animateToRegion({
+      latitude: parseFloat(parks[index].coordinates.lat),
+      longitude: parseFloat(parks[index].coordinates.lng),
+      latitudeDelta: 0.015,
+      longitudeDelta: 0.0121,
+    });
+  }
+
+  const onAddToFav = async (parkId) => {
+    console.log(parkId, 'add to fav');
+    const res = await parkService.addFavorite(parkId, loggedUser._id)
+    if (res.error) {
+      //NOTIFY
+    }
+    const index = parks.findIndex(park => parkId === park._id)
+    const parksClone = [...parks]
+    const parkObj = parks[index]
+    parkObj.isFavorite = true
+    parksClone.splice[index, 1, parkObj]
+    setParks(parksClone)
+
+  }
+
+  const onRemoveFromFav = async (parkId) => {
+    console.log(parkId, 'remove to fav');
+
+    const res = await parkService.removeFavorite(parkId, loggedUser._id)
+    if (res.error) {
+      //NOTIFY
+    }
+    const index = parks.findIndex(park => parkId === park._id)
+    const parksClone = [...parks]
+    const parkObj = parks[index]
+    parkObj.isFavorite = false
+    parksClone.splice[index, 1, parkObj]
+    setParks(parksClone)
+  }
 
   return (
     <View
@@ -447,7 +493,7 @@ export const Home = () => {
       }}
     >
       <MapView
-        style={{width: '100%', height: '30%'}}
+        style={{ width: '100%', height: '30%' }}
         customMapStyle={mapstyle}
         region={{
           latitude: center.lat,
@@ -477,14 +523,14 @@ export const Home = () => {
                         </View>
                     </Callout>
                 </Marker> */}
-        {parks.map(park => {
+        {parks.map((park, index) => {
           return (
             <Marker
-              key={park._id}
+              key={index}
               identifier={park._id}
               title={park.name}
               description="my very own"
-              ref={markerRef}
+              ref={el => markersRefArr.current[index] = el}
               coordinate={{
                 latitude: parseFloat(park.coordinates.lat),
                 longitude: parseFloat(park.coordinates.lng),
@@ -499,14 +545,7 @@ export const Home = () => {
                 supportRTL
                 style={{ marginTop: 30, marginBottom: 20 }}
             ></Button> */}
-      <Button
-        onPress={onShowCallout}
-        label={'ףףףףףףףףףתלחץ עליי דחוף'}
-        supportRTL
-        style={{marginTop: 30, marginBottom: 20}}
-      ></Button>
-      <ParkList parks={parks} />
-
+      <ParkList parks={parks} navi={navigation} isLogged={Boolean(loggedUser)} onPanToMarker={onPanToMarker} onAddToFav={onAddToFav} onRemoveFromFav={onRemoveFromFav} />
       <Toast
         visible={showToast}
         position={'bottom'}
@@ -515,7 +554,7 @@ export const Home = () => {
         onDismiss={() => setToast(false)}
         autoDismiss={3000}
         showDismiss={true}
-        action={{label: 'Undo', onPress: () => console.log('undo')}}
+        action={{ label: 'Undo', onPress: () => console.log('undo') }}
         showLoader={false}
         supportRTL
       />
