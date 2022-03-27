@@ -1,7 +1,6 @@
 import React, {useState, useContext} from 'react';
-import {View, Text, Image, Button} from 'react-native-ui-lib';
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import {Colors} from 'react-native-ui-lib';
+import {View, Text, Image, Button, Colors} from 'react-native-ui-lib';
+import {StyleSheet, TouchableOpacity, Animated} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export function ParkPreview({
@@ -11,6 +10,7 @@ export function ParkPreview({
   onPanToMarker,
   onAddToFav,
   onRemoveFromFav,
+  onParkPress,
 }) {
   const panToMarker = () => {
     onPanToMarker(parkObj._id);
@@ -27,43 +27,49 @@ export function ParkPreview({
   const removeFromFav = () => {
     onRemoveFromFav(parkObj._id);
   };
+  const parkPress = () => {
+    onParkPress(parkObj._id);
+  };
   return (
-    <View style={styles.parkPreviewCont}>
-      <View style={styles.parkPreviewText}>
-        <Text text30 color={Colors.moonOrSun}>
-          {parkObj.name}
-        </Text>
-        <Text text70>
-          {parkObj.address}, {parkObj.city}
-        </Text>
+    <TouchableOpacity onPress={parkPress}>
+      <View style={styles.parkPreviewCont}>
+        <View style={styles.parkPreviewText}>
+          <Text text30 color={Colors.textColor}>
+            {parkObj.name}
+          </Text>
+          <Text text70 color={Colors.textColor}>
+            {parkObj.address}, {parkObj.city}
+          </Text>
+        </View>
+        <View style={styles.parkPreviewBtns}>
+          <TouchableOpacity onPress={panToMarker}>
+            <MaterialCommunityIcons
+              style={{marginTop: 10, marginBottom: 10}}
+              name={'google-maps'}
+              size={40}
+              color={Colors.mapMarker}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={!isLogged ? () => navi.jumpTo('התחברות') : toggleFav}
+            style={{marginLeft: 10}}
+          >
+            <MaterialCommunityIcons
+              name={parkObj.isFavorite ? 'heart' : 'heart-outline'}
+              size={45}
+              color={isLogged ? 'tomato' : 'grey'}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.parkPreviewBtns}>
-        <TouchableOpacity onPress={panToMarker}>
-          <MaterialCommunityIcons
-            style={{marginTop: 10, marginBottom: 10}}
-            name={'google-maps'}
-            size={30}
-            color={Colors.mapMarker}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={!isLogged ? () => navi.jumpTo('התחברות') : toggleFav}
-        >
-          <MaterialCommunityIcons
-            name={parkObj.isFavorite ? 'heart' : 'heart-outline'}
-            size={30}
-            color={isLogged ? 'tomato' : 'grey'}
-          />
-        </TouchableOpacity>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   parkPreviewCont: {
     width: '100%',
-    backgroundColor: 'black',
+    backgroundColor: Colors.cardBG,
     height: 100,
     marginTop: 5,
     borderRadius: 10,
@@ -72,6 +78,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 10,
   },
-  parkPreviewText: {alignItems: 'center'},
-  parkPreviewBtns: {flexDirection: 'column'},
+  parkPreviewText: {alignItems: 'center', color: Colors.grey60},
+  parkPreviewBtns: {flexDirection: 'row', alignItems: 'center'},
 });

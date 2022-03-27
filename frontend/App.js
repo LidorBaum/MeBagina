@@ -7,7 +7,7 @@ import {Store} from './src/redux/store';
 import {Navigator} from './src/pages/Navigator';
 import auth from '@react-native-firebase/auth';
 import userService from './src/services/userService';
-import {useSelector, useDispatch} from 'react-redux';
+import {darkMap, lightMap} from './src/services/utils';
 
 Colors.loadSchemes({
   light: {
@@ -18,15 +18,29 @@ Colors.loadSchemes({
     tabBarText: Colors.violet40,
     mountainForeground: Colors.green30,
     mountainBackground: Colors.green50,
+    cardBG: '#13678A',
+    navigatorBG: '#45C4B0',
+    error: Colors.red30,
+    success: Colors.green40,
+    warn: Colors.yellow30,
+    info: Colors.violet40,
+    map: lightMap,
   },
   dark: {
-    screenBG: Colors.grey10,
-    textColor: Colors.white,
+    screenBG: '#012030',
+    textColor: Colors.grey70,
     moonOrSun: Colors.blue50,
     mapMarker: Colors.red30,
-    tabBarText: Colors.violet40,
+    tabBarText: '#9AEBA3',
     mountainForeground: Colors.violet10,
     mountainBackground: Colors.violet70,
+    cardBG: '#13678A',
+    navigatorBG: '#45C4B0',
+    error: Colors.red30,
+    success: Colors.green40,
+    warn: Colors.yellow30,
+    info: Colors.violet40,
+    map: darkMap,
   },
 });
 

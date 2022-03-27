@@ -33,7 +33,7 @@ export function Profile() {
 
   return (
     <View>
-      <Text>Welcome {JSON.stringify(loggedUser.name)}</Text>
+      <Text>Welcome {loggedUser.name}</Text>
       <Button label="signout" onPress={signOut} />
     </View>
   );

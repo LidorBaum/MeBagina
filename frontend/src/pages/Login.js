@@ -1,6 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Button, Incubator, Image} from 'react-native-ui-lib';
-import {Colors} from 'react-native-ui-lib';
+import {
+  View,
+  Text,
+  Button,
+  Incubator,
+  Image,
+  Colors,
+} from 'react-native-ui-lib';
+import {Dimensions} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {
   GoogleSignin,
@@ -15,8 +22,10 @@ GoogleSignin.configure({
 import {useSelector, useDispatch} from 'react-redux';
 import {setLoggedUser} from '../redux/actions';
 import userService from '../services/userService';
+import Svg, {Path} from 'react-native-svg';
 import {ScrollView} from 'react-native';
 const {TextField} = Incubator;
+import Loader from 'react-native-mask-loader';
 
 export function Login({navigation}) {
   // Set an initializing state whilst Firebase connects
@@ -308,6 +317,16 @@ export function Login({navigation}) {
         height: '50%',
       }}
     >
+      <Svg
+        height={200}
+        width={Dimensions.get('screen').width}
+        viewBox="0 0 1440 320"
+      >
+        <Path
+          fill={Colors.moonOrSun}
+          d="M0,224L48,186.7C96,149,192,75,288,58.7C384,43,480,85,576,138.7C672,192,768,256,864,245.3C960,235,1056,149,1152,117.3C1248,85,1344,107,1392,117.3L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
+        />
+      </Svg>
       {/* <View style={{}}> */}
       <Image
         source={require('../assets/logo.png')}

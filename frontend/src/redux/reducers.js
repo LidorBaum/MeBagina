@@ -1,7 +1,14 @@
 import {SET_LOGGED_USER} from './actions';
+import {NEW_NOTIFICATION, DISMISS_NOTIFICATION} from './actions';
 
 const initialState = {
   loggedUser: null,
+};
+
+const notificationState = {
+  isShowToast: false,
+  toastSeverity: '',
+  toastText: 'Test',
 };
 
 function userReducer(state = initialState, action) {
@@ -13,4 +20,24 @@ function userReducer(state = initialState, action) {
   }
 }
 
-export default userReducer;
+function toastReducer(state = notificationState, action) {
+  console.log(action);
+  switch (action.type) {
+    case NEW_NOTIFICATION:
+      return {
+        ...state,
+        isShowToast: true,
+        toastSeverity: action.payload.toastSeverity,
+        toastText: action.payload.toastText,
+      };
+    case DISMISS_NOTIFICATION:
+      return {...state, isShowToast: false};
+    default:
+      return state;
+  }
+}
+
+module.exports = {
+  userReducer,
+  toastReducer,
+};
