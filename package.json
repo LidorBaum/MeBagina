@@ -3,6 +3,5 @@
         "prettier": "2.6.0"
     },
     "dependencies": {
-        "@react-navigation/native-stack": "^6.5.2"
     }
 }
