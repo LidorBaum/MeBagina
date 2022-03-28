@@ -58,8 +58,7 @@ export const ParksHome = ({navigation}) => {
   }, []);
 
   const notify = (text, severity) => {
-    // dispatch(newNotification({toastText: text, toastSeverity: severity}))
-    navigation.push('Park', {title: 'BEbe'});
+    dispatch(newNotification({toastText: text, toastSeverity: severity}));
   };
 
   const onPanToMarker = parkId => {
@@ -74,7 +73,6 @@ export const ParksHome = ({navigation}) => {
   };
 
   const onAddToFav = async parkId => {
-    console.log(parkId, 'add to fav');
     const res = await parkService.addFavorite(parkId, loggedUser._id);
     if (res.error) {
       return dispatch(
@@ -91,8 +89,6 @@ export const ParksHome = ({navigation}) => {
   };
 
   const onRemoveFromFav = async parkId => {
-    console.log(parkId, 'remove to fav');
-
     const res = await parkService.removeFavorite(parkId, loggedUser._id);
     if (res.error) {
       return dispatch(
@@ -109,7 +105,6 @@ export const ParksHome = ({navigation}) => {
   };
 
   const onParkPress = parkId => {
-    console.log('park pressed', parkId);
     const index = parks.findIndex(park => parkId === park._id);
     navigation.push('Park', {
       park: parks[index],

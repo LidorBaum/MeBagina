@@ -25,7 +25,6 @@ import userService from '../services/userService';
 import Svg, {Path} from 'react-native-svg';
 import {ScrollView} from 'react-native';
 const {TextField} = Incubator;
-import Loader from 'react-native-mask-loader';
 
 export function Login({navigation}) {
   // Set an initializing state whilst Firebase connects
@@ -51,7 +50,6 @@ export function Login({navigation}) {
 
   async function handleUser(user) {
     if (user.additionalUserInfo.isNewUser) {
-      console.log('new user detected');
       const userObj = {
         email: signupCred.email,
         name: signupCred.name,

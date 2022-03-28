@@ -1,11 +1,20 @@
 import React, {useState} from 'react';
 import {Image, Colors, View, Text} from 'react-native-ui-lib';
-import {TouchableOpacity} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import IconBadge from 'react-native-icon-badge';
+import {ChatBox} from './ChatBox';
+import {LogBox} from 'react-native';
 
 export const Park = ({route, navigation}) => {
+  LogBox.ignoreLogs([
+    'Non-serializable values were found in the navigation state',
+  ]);
   const {park, onAddToFav, onRemoveFromFav} = route.params;
 
   const [parkObj, setParkObj] = useState(park);
@@ -15,7 +24,6 @@ export const Park = ({route, navigation}) => {
     if (parkObj.isFavorite) result = removeFromFav(parkObj._id);
     else result = addToFav(parkObj._id);
     if (result) {
-      console.log('succedded');
       setParkObj(prevPark => ({...prevPark, isFavorite: !prevPark.isFavorite}));
     }
   };
@@ -120,16 +128,23 @@ export const Park = ({route, navigation}) => {
       </View>
       <View
         style={{
-          backgroundColor: '#489EFE',
           width: '100%',
           height: '50%',
-          margin: 6,
-          alignItems: 'center',
-          justifyContent: 'center',
           borderRadius: 20,
+          marginBottom: 80,
         }}
       >
-        <Text>CHAT</Text>
+        <View
+          style={{
+            width: '100%',
+            height: '100%',
+            borderTopWidth: 4,
+            borderBottomWidth: 5,
+            borderRadius: 5,
+          }}
+        >
+          <ChatBox parkId={parkObj._id} />
+        </View>
       </View>
     </View>
   );

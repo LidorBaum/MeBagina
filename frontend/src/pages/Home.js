@@ -15,6 +15,7 @@ import {toastServerError} from '../services/utils';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ParksHome} from '../cmps/ParksHome';
 import {Park} from './Park';
+
 const Stack = createNativeStackNavigator();
 
 export const Home = ({navigation}) => {

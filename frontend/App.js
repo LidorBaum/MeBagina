@@ -50,7 +50,6 @@ const App = () => {
   const [firebaseUID, setFirebaseUID] = useState(null);
 
   async function onAuthStateChanged(user) {
-    console.log(user, 'line 37 app');
     setFirebaseUID(user?.uid);
   }
 

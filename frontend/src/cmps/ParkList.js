@@ -45,12 +45,12 @@ export const ParkList = ({
         />
       }
     >
-      <FlatList
+      {/* <FlatList
         data={parks}
         renderItem={renderPark}
         keyExtractor={item => item._id}
-      />
-      {/* {parks.map(park => (
+      /> */}
+      {parks.map(park => (
         <ParkPreview
           key={park._id}
           parkObj={park}
@@ -61,7 +61,7 @@ export const ParkList = ({
           onRemoveFromFav={onRemoveFromFav}
           onParkPress={onParkPress}
         />
-      ))} */}
+      ))}
     </ScrollView>
   );
 };

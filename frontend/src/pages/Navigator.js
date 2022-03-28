@@ -45,8 +45,6 @@ export function Navigator({firebaseUID}) {
       }
     };
     NetInfo.fetch().then(state => {
-      console.log('Connection type', state.type);
-      console.log('Is connected?', state.isConnected);
       if (state.isConnected) getUserFromDB();
       else
         dispatch(
@@ -55,9 +53,7 @@ export function Navigator({firebaseUID}) {
     });
   }, [firebaseUID]);
 
-  useEffect(() => {
-    console.log(toastSeverity);
-  }, [isShowToast]);
+  useEffect(() => {}, [isShowToast]);
 
   const TabArr = [
     {

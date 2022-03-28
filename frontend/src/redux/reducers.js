@@ -21,7 +21,6 @@ function userReducer(state = initialState, action) {
 }
 
 function toastReducer(state = notificationState, action) {
-  console.log(action);
   switch (action.type) {
     case NEW_NOTIFICATION:
       return {

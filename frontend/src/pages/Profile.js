@@ -1,11 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Button} from 'react-native-ui-lib';
+import {View, Text, Button, Colors} from 'react-native-ui-lib';
 import {useSelector, useDispatch} from 'react-redux';
 import {setLoggedUser} from '../redux/actions';
 import auth from '@react-native-firebase/auth';
-import userService from '../services/userService';
+import firestore from '@react-native-firebase/firestore';
+import {ScrollView} from 'react-native';
+import {ChatBox} from './ChatBox';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
-export function Profile() {
+export function Profile({navigation}) {
+  console.log('navigation', navigation);
+
   const {loggedUser} = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
   if (!loggedUser) {
@@ -28,13 +33,20 @@ export function Profile() {
   const signOut = () => {
     auth()
       .signOut()
-      .then(() => console.log('User signed out!'));
+      .then(() => {
+        console.log('navigating');
+        navigation.navigate('גינות');
+      });
   };
 
   return (
-    <View>
+    <View flex center>
       <Text>Welcome {loggedUser.name}</Text>
-      <Button label="signout" onPress={signOut} />
+      <Button
+        label="signout"
+        style={{backgroundColor: Colors.navigatorBG, width: 150}}
+        onPress={signOut}
+      />
     </View>
   );
 }
