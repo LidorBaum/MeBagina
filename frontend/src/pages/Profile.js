@@ -3,10 +3,6 @@ import {View, Text, Button, Colors} from 'react-native-ui-lib';
 import {useSelector, useDispatch} from 'react-redux';
 import {setLoggedUser} from '../redux/actions';
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
-import {ScrollView} from 'react-native';
-import {ChatBox} from './ChatBox';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 export function Profile({navigation}) {
   console.log('navigation', navigation);

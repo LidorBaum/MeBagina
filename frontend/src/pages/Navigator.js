@@ -8,6 +8,7 @@ import {Colors, Toast} from 'react-native-ui-lib';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AnimatedTabBarNavigator} from 'react-native-animated-nav-tab-bar';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {useSelector, useDispatch} from 'react-redux';
 import userService from '../services/userService';
 import {
@@ -16,8 +17,6 @@ import {
   newNotification,
 } from '../redux/actions';
 import NetInfo from '@react-native-community/netinfo';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import LinearGradient from 'react-native-linear-gradient';
 
 const Tab = AnimatedTabBarNavigator();
 
@@ -32,7 +31,6 @@ export function Navigator({firebaseUID}) {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     flex: 1,
-    // position: 'absolute'
   };
 
   const {loggedUser} = useSelector(state => state.userReducer);
@@ -178,16 +176,15 @@ export function Navigator({firebaseUID}) {
           <Toast
             visible={isShowToast}
             position={'top'}
-            backgroundColor={Colors[toastSeverity] || Colors.blue80}
+            backgroundColor={Colors[toastSeverity] || Colors.blue20}
             message={toastText}
             onDismiss={() => dispatch(dismissNotification())}
             autoDismiss={3000}
             showDismiss={true}
-            action={{label: 'Undo', onPress: () => console.log('undo')}}
-            showLoader={false}
             supportRTL
             zIndex={1000000}
             swipeable={true}
+            enableHapticFeedback={true}
           />
         </SafeAreaView>
       </NavigationContainer>

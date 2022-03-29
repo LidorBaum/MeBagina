@@ -39,7 +39,7 @@ Colors.loadSchemes({
     error: Colors.red30,
     success: Colors.green40,
     warn: Colors.yellow30,
-    info: Colors.violet40,
+    info: Colors.violet20,
     map: darkMap,
   },
 });

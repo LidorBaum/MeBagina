@@ -1,11 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {Colors} from 'react-native-ui-lib';
 import GetLocation from 'react-native-get-location';
-
-import {RefreshControl} from 'react-native';
-
-import {Text, Button, Image, Toast, View} from 'react-native-ui-lib'; //eslint-disable-line
-
+import ReactNativeHapticFeedback from "react-native-haptic-feedback";
+import {Button,Colors, View} from 'react-native-ui-lib'; //eslint-disable-line
 import MapView, {Callout, Marker} from 'react-native-maps';
 import parkService from '../services/parkService';
 import {ParkList} from '../cmps/ParkList';
@@ -13,13 +9,17 @@ import {useSelector, useDispatch} from 'react-redux';
 import {newNotification} from '../redux/actions';
 import {toastServerError} from '../services/utils';
 
+const options = {
+    enableVibrateFallback: true,
+    ignoreAndroidSystemSettings: false
+  };
+
 export const ParksHome = ({navigation}) => {
   const {loggedUser} = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
   const markersRefArr = useRef([]);
   const mapRef = useRef(null);
   const [parks, setParks] = useState([]);
-  const [markers, setMarkers] = useState([]);
   const [center, setCenter] = useState({lat: 32.0153719, lng: 24.7457522});
   const getUserLocation = () => {
     GetLocation.getCurrentPosition({
@@ -73,6 +73,8 @@ export const ParksHome = ({navigation}) => {
   };
 
   const onAddToFav = async parkId => {
+    ReactNativeHapticFeedback.trigger("impactLight", options);
+
     const res = await parkService.addFavorite(parkId, loggedUser._id);
     if (res.error) {
       return dispatch(
@@ -89,6 +91,8 @@ export const ParksHome = ({navigation}) => {
   };
 
   const onRemoveFromFav = async parkId => {
+    ReactNativeHapticFeedback.trigger("notificationError", options);
+
     const res = await parkService.removeFavorite(parkId, loggedUser._id);
     if (res.error) {
       return dispatch(
@@ -144,7 +148,7 @@ export const ParksHome = ({navigation}) => {
               key={index}
               identifier={park._id}
               title={park.name}
-              description="my very own"
+              description={`${park.address}, ${park.city}`}
               ref={el => (markersRefArr.current[index] = el)}
               coordinate={{
                 latitude: parseFloat(park.coordinates.lat),
@@ -156,7 +160,7 @@ export const ParksHome = ({navigation}) => {
         })}
       </MapView>
       <Button
-        onPress={() => notify('אני בגינה')}
+        onPress={() => notify('אני בגינה', 'error')}
         label={'ףףףףףףףףףתלחץ עליי דחוף'}
         supportRTL
         style={{

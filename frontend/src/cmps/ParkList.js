@@ -1,7 +1,6 @@
-import React, {useState, useCallback} from 'react';
-import {View, Text, Colors} from 'react-native-ui-lib';
-import {ScrollView, RefreshControl, FlatList} from 'react-native';
-import {ParkPreview} from './ParkPreview';
+import React, { useState, useCallback } from 'react';
+import { ScrollView, RefreshControl } from 'react-native';
+import { ParkPreview } from './ParkPreview';
 
 export const ParkList = ({
   parks,
@@ -19,24 +18,9 @@ export const ParkList = ({
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  const renderPark = park => {
-    return (
-      <ParkPreview
-        key={park._id}
-        parkObj={park.item}
-        navi={navi}
-        isLogged={isLogged}
-        onPanToMarker={onPanToMarker}
-        onAddToFav={onAddToFav}
-        onRemoveFromFav={onRemoveFromFav}
-        onParkPress={onParkPress}
-      />
-    );
-  };
-
   return (
     <ScrollView
-      style={{width: '100%', marginTop: 10}}
+      style={{ width: '100%', marginTop: 10 }}
       RefreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -45,11 +29,6 @@ export const ParkList = ({
         />
       }
     >
-      {/* <FlatList
-        data={parks}
-        renderItem={renderPark}
-        keyExtractor={item => item._id}
-      /> */}
       {parks.map(park => (
         <ParkPreview
           key={park._id}

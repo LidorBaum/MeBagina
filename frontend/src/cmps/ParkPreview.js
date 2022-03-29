@@ -1,7 +1,9 @@
-import React, {useState, useContext} from 'react';
-import {View, Text, Image, Button, Colors} from 'react-native-ui-lib';
-import {StyleSheet, TouchableOpacity, Animated} from 'react-native';
+import React from 'react';
+import {View, Text, Colors} from 'react-native-ui-lib';
+import {StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconBadge from 'react-native-icon-badge';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export function ParkPreview({
   parkObj,
@@ -42,6 +44,31 @@ export function ParkPreview({
           </Text>
         </View>
         <View style={styles.parkPreviewBtns}>
+        <TouchableOpacity
+            style={{
+              marginRight: 10,
+            }}
+          >
+            <IconBadge
+              MainElement={
+                <FontAwesome5 name={'dog'} size={35} color={'#ffe261'} />
+              }
+              BadgeElement={
+                <Text style={{color: '#000000'}}>{parkObj.dogs}</Text>
+              }
+              IconBadgeStyle={{
+                position: 'absolute',
+                top: -15,
+                right: 35,
+                width: 20,
+                height: 20,
+                borderRadius: 15,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#ffe261',
+              }}
+            />
+          </TouchableOpacity>
           <TouchableOpacity onPress={panToMarker}>
             <MaterialCommunityIcons
               style={{marginTop: 10, marginBottom: 10}}

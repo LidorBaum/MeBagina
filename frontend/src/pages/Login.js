@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
   View,
-  Text,
   Button,
   Incubator,
   Image,
@@ -19,17 +18,15 @@ GoogleSignin.configure({
   webClientId:
     '147926405452-9nolh1ovp3t7jcf3bbaga64gq4lnkdrs.apps.googleusercontent.com',
 });
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {setLoggedUser} from '../redux/actions';
 import userService from '../services/userService';
 import Svg, {Path} from 'react-native-svg';
-import {ScrollView} from 'react-native';
 const {TextField} = Incubator;
 
 export function Login({navigation}) {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
-  // const { loggedUser } = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
   const [loginCred, setLoginCred] = useState({email: '', password: ''});
   const [signupCred, setSignupCred] = useState({
@@ -43,7 +40,6 @@ export function Login({navigation}) {
   async function onAuthStateChanged(user) {
     const userFromDB = await userService.getByFirebaseUID(user?.uid);
     if (userFromDB.error) console.log('error fetching from db');
-    // dispatch(setLoggedUser({ ...userFromDB, ...user }))
     dispatch(setLoggedUser(userFromDB));
     if (initializing) setInitializing(false);
   }
@@ -325,13 +321,11 @@ export function Login({navigation}) {
           d="M0,224L48,186.7C96,149,192,75,288,58.7C384,43,480,85,576,138.7C672,192,768,256,864,245.3C960,235,1056,149,1152,117.3C1248,85,1344,107,1392,117.3L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"
         />
       </Svg>
-      {/* <View style={{}}> */}
       <Image
         source={require('../assets/logo.png')}
         style={{width: 150, height: 150}}
         resizeMode="cover"
       />
-      {/* </View> */}
       {isNewUser ? signupForm : loginForm}
     </View>
   );
