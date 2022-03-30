@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
-import { ScrollView, RefreshControl } from 'react-native';
-import { ParkPreview } from './ParkPreview';
+import React, {useState, useCallback} from 'react';
+import {ScrollView, RefreshControl} from 'react-native';
+import {ParkPreview} from './ParkPreview';
 
 export const ParkList = ({
   parks,
@@ -10,6 +10,7 @@ export const ParkList = ({
   onAddToFav,
   onRemoveFromFav,
   onParkPress,
+  onDogPress,
 }) => {
   const [refreshing, setRefreshing] = useState(false);
 
@@ -20,7 +21,7 @@ export const ParkList = ({
 
   return (
     <ScrollView
-      style={{ width: '100%', marginTop: 10 }}
+      style={{width: '100%', marginTop: 10}}
       RefreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -39,6 +40,7 @@ export const ParkList = ({
           onAddToFav={onAddToFav}
           onRemoveFromFav={onRemoveFromFav}
           onParkPress={onParkPress}
+          onDogPress={onDogPress}
         />
       ))}
     </ScrollView>

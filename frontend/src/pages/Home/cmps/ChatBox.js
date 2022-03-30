@@ -2,49 +2,14 @@ import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {Text, Colors} from 'react-native-ui-lib';
 import firestore from '@react-native-firebase/firestore';
-import {KeyboardAvoidingView, View} from 'react-native';
 
 import {Chat, MessageType, defaultTheme} from '@flyerhq/react-native-chat-ui';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 export const ChatBox = props => {
   const {loggedUser} = useSelector(state => state.userReducer);
-  console.log('loggedUser', loggedUser);
 
-  const [message, setMessage] = useState('default message');
   const [msgs, setMsgs] = useState([]);
-  // const [dummy, setDummy] = useState([
-  //     {
-  //         text: '111',
-  //         id: '1',
-  //         name: "shay",
-  //         userName: 'shay',
-  //         author: {
-  //             id: 1,
-  //             firstName: 'Doe'
-  //         },
-  //         type: 'text',
-  //         firstName: 'John',
-  //         lastName: 'Doe',
-  //         createdAt: Date.now()
-  //     },
-  //     {
-  //         text: '2',
-  //         id: '2',
-  //         author: 'yoshi',
-  //         type: 'text',
-  //         createdAt: Date.now()
-
-  //     },
-  //     {
-  //         text: '3',
-  //         id: loggedUser._id,
-  //         author: { id: loggedUser._id },
-  //         type: 'text',
-  //         createdAt: Date.now()
-
-  //     },
-  // ]);
 
   useEffect(() => {
     const unsubscribe = firestore()
@@ -58,7 +23,6 @@ export const ChatBox = props => {
           });
           setMsgs(myDataArray);
           console.log('new msg');
-          // console.log(myDataArray, 'msgs from fb');
         } else {
           console.log('its empty');
         }

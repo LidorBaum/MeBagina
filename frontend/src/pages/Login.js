@@ -1,11 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Button,
-  Incubator,
-  Image,
-  Colors,
-} from 'react-native-ui-lib';
+import {View, Button, Incubator, Image, Colors} from 'react-native-ui-lib';
 import {Dimensions} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {

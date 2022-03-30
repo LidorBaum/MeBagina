@@ -1,7 +1,7 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ParksHome } from '../cmps/ParksHome';
-import { Park } from './Park';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {ParksHome} from './cmps/ParksHome';
+import {Park} from './cmps/Park';
 
 const Stack = createNativeStackNavigator();
 
