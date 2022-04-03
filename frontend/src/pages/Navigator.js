@@ -3,7 +3,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {Home} from './Home/Home';
 import {Login} from './Login';
 import {Profile} from './Profile';
-import {SafeAreaView, useColorScheme} from 'react-native';
+import {ChatsPage} from './ChatsPage';
+import {SafeAreaView, useColorScheme, StyleSheet} from 'react-native';
 import {Colors, Toast} from 'react-native-ui-lib';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -28,10 +29,6 @@ export function Navigator({firebaseUID}) {
     state => state.toastReducer,
   );
   const isDarkMode = useColorScheme() === 'dark';
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    flex: 1,
-  };
 
   const {loggedUser} = useSelector(state => state.userReducer);
   useEffect(() => {
@@ -54,6 +51,13 @@ export function Navigator({firebaseUID}) {
   useEffect(() => {}, [isShowToast]);
 
   const TabArr = [
+    {
+      name: 'Chats',
+      route: "צ'אטים",
+      iconName: 'chat',
+      component: ChatsPage,
+      requiresLog: true,
+    },
     {
       name: 'Home',
       route: 'גינות',
@@ -80,7 +84,7 @@ export function Navigator({firebaseUID}) {
   return (
     <>
       <NavigationContainer>
-        <SafeAreaView style={backgroundStyle}>
+        <SafeAreaView style={styles.safe}>
           <Tab.Navigator
             screenOptions={({route}) => ({
               tabBarActiveTintColor: 'tomato',
@@ -105,7 +109,7 @@ export function Navigator({firebaseUID}) {
             appearance={{
               tabButtonLayout: 'horizontal',
               activeTabBackgrounds: '#13678a',
-              floating: true,
+              floating: false,
               horizontalPadding: 10,
               tabBarBackground: Colors.navigatorBG,
             }}
@@ -191,3 +195,9 @@ export function Navigator({firebaseUID}) {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  safe: {
+    flex: 1,
+  },
+});

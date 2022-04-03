@@ -14,6 +14,8 @@ import {
   Platform,
   Linking,
   ActivityIndicator,
+  TouchableHighlight,
+  ImageBackground,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -23,6 +25,7 @@ import {ChatBox} from './ChatBox';
 import {LogBox} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {newNotification} from '../../../redux/actions';
+
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 const options = {
   enableVibrateFallback: true,
@@ -36,6 +39,7 @@ export const Park = ({route}) => {
   const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [parkObj, setParkObj] = useState(park);
+  const [isJoinedChat, setIsJoinedChat] = useState(false);
   const [imageResizeMode, setImageResizeMode] = useState('cover');
   const toggleFav = () => {
     let result;
@@ -203,7 +207,7 @@ export const Park = ({route}) => {
         <View
           style={{
             width: '100%',
-            height: '50%',
+            height: '60%',
             borderRadius: 20,
             marginBottom: 80,
           }}
@@ -217,7 +221,40 @@ export const Park = ({route}) => {
               borderRadius: 5,
             }}
           >
-            <ChatBox parkId={parkObj._id} />
+            {isJoinedChat ? (
+              <ChatBox parkId={parkObj._id} />
+            ) : (
+              <ImageBackground
+                source={{
+                  uri: 'https://res.cloudinary.com/echoshare/image/upload/v1649026203/MeBagina/Untitled-2_vb6zb6.png',
+                }}
+                errorSource={require('../../../assets/logo.png')}
+                backgroundColor={Colors.screenBG}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                resizeMode={imageResizeMode}
+                blurRadius={10}
+                onError={() => {
+                  setImageResizeMode('contain');
+                  notify(
+                    'עדיין לא הוסיפו תמונה של הגינה, רוצה להיות הראשון?',
+                    'warn',
+                  );
+                }}
+              >
+                <Button
+                  text80
+                  label="עדיין לא הצטרפת לצ'אט, אתה רוצה להצטרף?"
+                  style={{linkColor: Colors.red20, width: 350, height: 50}}
+                  onPress={() => setIsJoinedChat(true)}
+                />
+              </ImageBackground>
+            )}
           </View>
         </View>
       </View>

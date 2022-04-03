@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useEffect, useState, useRef} from 'react';
+import {StyleSheet, Animated} from 'react-native';
 import {
   View,
   Text,
@@ -18,13 +18,15 @@ import {newNotification} from '../redux/actions';
 
 const {TextField} = Incubator;
 export function Profile({navigation}) {
-  const [isEditDetailsDialog, setIsEditDetailsDialog] = useState(true);
+  const [isEditDetailsDialog, setIsEditDetailsDialog] = useState(false);
   const [greet, setGreet] = useState('שלום, ');
   const [editDetailsForm, setForm] = useState({
     name: '',
     email: '',
   });
+  const [userPassForEdit, setUserPassForEdit] = useState('');
   const [isSaveable, setIsSaveable] = useState(false);
+  const [isEditingEmail, setIsEditingEmail] = useState(false);
 
   useEffect(() => {
     if (!loggedUser) return;
@@ -37,10 +39,10 @@ export function Profile({navigation}) {
     // let hours = 1
     console.log(typeof hours, hours);
     switch (true) {
-      case hours >= 6 && hours <= 11:
+      case hours >= 6 && hours <= 10:
         setGreet('בוקר טוב, ');
         break;
-      case hours >= 12 && hours <= 18:
+      case hours >= 11 && hours <= 18:
         setGreet('צהריים טובים, ');
         break;
       case hours >= 19 && hours <= 21:
@@ -54,6 +56,11 @@ export function Profile({navigation}) {
   }, []);
 
   const handleChangeDetails = (field, value) => {
+    if (field === 'email' && loggedUser.email !== value) {
+      console.log('meets');
+      setIsEditingEmail(true);
+    } else if (field === 'email' && loggedUser.email === value)
+      setIsEditingEmail(false);
     const newForm = {...editDetailsForm, [field]: value};
     setIsSaveable(checkSavability(newForm));
     setForm(newForm);
@@ -71,6 +78,7 @@ export function Profile({navigation}) {
 
   const cancelEditDetails = () => {
     setIsEditDetailsDialog(false);
+    setIsEditingEmail(false);
     resetEditDetailsForm();
   };
 
@@ -84,10 +92,15 @@ export function Profile({navigation}) {
   const notify = (text, severity) => {
     dispatch(newNotification({toastText: text, toastSeverity: severity}));
   };
+
   const onSaveNewDetails = async () => {
-    // const user = auth().
+    // const user = await auth().user
     // console.log(user);
-    // const res = await user.updateEmail('Lidor1@gmail.com')
+    // const res = await user.updateEmail('Lidor4400')
+    // // console.log(Object.keys(user._nativeModule));
+    // // console.log(user._nativeModule, 'native moduel');
+    // const res = await user._nativeModule.reauthenticateWithCredential(loggedUser.email, userPassForEdit)
+    // console.log(res);
     // console.log(res);
 
     if (editDetailsForm.email !== loggedUser.email)
@@ -158,7 +171,7 @@ export function Profile({navigation}) {
             {loggedUser.email}
           </Text>
           <Text style={styles.textStyle} text50>
-            מה תרצה לעשות?
+            מה בא לך לעשות?
           </Text>
         </View>
         <View center style={styles.actionsBtns}>
@@ -212,7 +225,7 @@ export function Profile({navigation}) {
         useSafeArea
         key={'123'}
         visible={isEditDetailsDialog}
-        onDismiss={() => setIsEditDetailsDialog(false)}
+        onDismiss={cancelEditDetails}
         panDirection={PanningProvider.Directions.DOWN}
       >
         <View flex={1} style={styles.editDetailsModalContainer}>
@@ -261,6 +274,29 @@ export function Profile({navigation}) {
                   : Colors.red30,
               }}
             />
+            {isEditingEmail && (
+              <TextField
+                text60
+                value={userPassForEdit}
+                color={Colors.moonOrSun}
+                containerStyle={{marginBottom: 20}}
+                floatingPlaceholder
+                floatOnFocus
+                placeholder="סיסמה"
+                onChangeText={val => setUserPassForEdit(val)}
+                floatingPlaceholderStyle={{
+                  color: userPassForEdit ? Colors.moonOrSun : Colors.red30,
+                }}
+                placeholderTextColor={Colors.transparent}
+                style={{
+                  textAlign: 'left',
+                  borderBottomWidth: 2,
+                  borderBottomColor: userPassForEdit
+                    ? Colors.moonOrSun
+                    : Colors.red30,
+                }}
+              />
+            )}
             <View margin-20 style={styles.editDetailsModalBtnsView}>
               <Button
                 text70

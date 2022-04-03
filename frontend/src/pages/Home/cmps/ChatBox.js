@@ -8,7 +8,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 export const ChatBox = props => {
   const {loggedUser} = useSelector(state => state.userReducer);
-
+  console.log(props);
   const [msgs, setMsgs] = useState([]);
 
   useEffect(() => {
@@ -92,6 +92,12 @@ export const ChatBox = props => {
           },
         }}
       />
+      {/* <BlurView
+        style={styles.absolute}
+        blurType="light"
+        blurAmount={10}
+        reducedTransparencyFallbackColor="white"
+      /> */}
     </SafeAreaProvider>
     // </KeyboardAvoidingView>
   );

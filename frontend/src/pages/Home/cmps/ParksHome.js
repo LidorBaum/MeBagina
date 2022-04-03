@@ -17,6 +17,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {newNotification} from '../../../redux/actions';
 import {toastServerError} from '../../../services/utils';
 import {calcDistance} from '../../../services/utils';
+import {TouchableHighlight, TouchableOpacity} from 'react-native';
 const options = {
   enableVibrateFallback: true,
   ignoreAndroidSystemSettings: false,
@@ -24,11 +25,17 @@ const options = {
 
 export const ParksHome = ({navigation}) => {
   const {loggedUser} = useSelector(state => state.userReducer);
+  console.log(loggedUser);
   const dispatch = useDispatch();
   const markersRefArr = useRef([]);
   const mapRef = useRef(null);
   const [parks, setParks] = useState([]);
   const [markers, setMarkers] = useState([]);
+  const [filters, setFilters] = useState({
+    vets: true,
+    parks: true,
+  });
+  const [markersForDisplay, setMarkersForDisplay] = useState([]);
   const [center, setCenter] = useState({lat: 32.0153719, lng: 24.7457522});
   const [isModalVisible, setIsModalVisible] = useState(false);
   const getUserLocation = () => {
@@ -89,6 +96,7 @@ export const ParksHome = ({navigation}) => {
       const res = await parkService.getAllParks(loggedUser?._id);
       if (res.error) return notify(res.error.message, 'error');
       setParks([...res]);
+      res.forEach(park => (park.type = 'park'));
       setMarkers(prevMarkers => [...prevMarkers, ...res]);
     };
     getParks();
@@ -96,25 +104,17 @@ export const ParksHome = ({navigation}) => {
   }, []);
 
   useEffect(() => {
+    const getParks = async () => {
+      const res = await parkService.getAllParks(loggedUser?._id);
+      if (res.error) return notify(res.error.message, 'error');
+      setParks([...res]);
+      res.forEach(park => (park.type = 'park'));
+      // setMarkers(prevMarkers => [...prevMarkers, ...res]);
+      return res;
+    };
+    const parks = getParks();
     if (!parks.length) return;
     const parksArr = [...parks];
-    parksArr.sort((a, b) => {
-      const diffA =
-        parseFloat(a.coordinates.lat) -
-        center.lat +
-        (a.coordinates.lng - center.lng);
-      const diffB =
-        parseFloat(b.coordinates.lat) -
-        center.lat +
-        (b.coordinates.lng - center.lng);
-      if (diffA > diffB) {
-        return 1;
-      } else if (diffA < diffB) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
     parksArr.forEach(park => {
       const dist = calcDistance(
         park.coordinates.lat,
@@ -124,7 +124,15 @@ export const ParksHome = ({navigation}) => {
       );
       park.distance = dist;
     });
+    parksArr.sort((a, b) => {
+      if (a.distance < b.distance) return -1;
+      if (a.distance > b.distance) return 1;
+      return 0;
+    });
     setParks(parksArr);
+    const markersArr = [...markers];
+    markersArr.splice(0, parksArr.length - 1, parksArr);
+    setMarkers(...markersArr);
   }, [center]);
 
   const notify = (text, severity) => {
@@ -195,6 +203,12 @@ export const ParksHome = ({navigation}) => {
     setIsModalVisible(true);
   };
 
+  const onChangeMapMarkers = e => {
+    console.log('processing changes');
+    const markersArr = [...markers];
+    setMarkers(markersArr.filter(marker => marker.type !== 'park'));
+  };
+
   return (
     <>
       <View
@@ -203,6 +217,7 @@ export const ParksHome = ({navigation}) => {
           justifyContent: 'flex-start',
           alignItems: 'center',
           padding: 5,
+          // height: '80%',
           backgroundColor: Colors.screenBG,
         }}
       >
@@ -228,67 +243,99 @@ export const ParksHome = ({navigation}) => {
                     ? require('../../../assets/pawmarker.png')
                     : undefined
                 }
-                pinColor={marker.type === 'userLoc' ? 'blue' : 'red'}
+                // pinColor={marker.type === 'userLoc' ? 'blue' : 'red'}
                 identifier={marker._id}
-                title={marker.name}
-                description={
-                  marker.type !== 'userLoc'
-                    ? `${marker.address}, ${marker.city}`
-                    : undefined
-                }
+                // title={marker.name}
+                // description={
+                //   marker.type !== 'userLoc'
+                //     ? `${marker.address}, ${marker.city}`
+                //     : undefined
+                // }
                 ref={el => (markersRefArr.current[index] = el)}
                 coordinate={{
                   latitude: parseFloat(marker.coordinates.lat),
                   longitude: parseFloat(marker.coordinates.lng),
                 }}
                 onCalloutPress={!marker.type ? calloutPress : () => {}}
-              />
+              >
+                <Callout>
+                  <Text
+                    text70
+                    center
+                    style={{color: 'black', paddingLeft: 5, paddingRight: 5}}
+                  >
+                    {marker.name}
+                  </Text>
+                  {marker.type !== 'userLoc' && (
+                    <Text text70 center style={{color: Colors.navigatorBG}}>
+                      {marker.address}, {marker.city}
+                    </Text>
+                  )}
+                </Callout>
+              </Marker>
             );
           })}
-          {/* <Marker
-        key={markersRefArr.current.length}
-        identifier={markersRefArr.current.length}
-        title={'המיקום שלך'}
-        ref={el => (markersRefArr.current[markersRefArr.current.length] = el)}
-              coordinate={{
-                latitude: parseFloat(center.lat),
-                longitude: parseFloat(center.lng),
-              }}
-              onCalloutPress={calloutPress}
-        /> */}
         </MapView>
         <View
           row
-          padding={20}
+          padding={10}
           style={{
             justifyContent: 'space-evenly',
             width: '100%',
           }}
         >
           <Checkbox
-            style={{margin: 10, backgroundColor: Colors.green90}}
+            style={{
+              margin: 10,
+              backgroundColor: filters.vets
+                ? Colors.navigatorBG
+                : Colors.screenBG,
+              width: 35,
+              height: 35,
+            }}
             color={Colors.navigatorBG}
             label={'מרפאות'}
-            labelStyle={{color: Colors.navigatorBG, marginLeft: -5}}
-            value={false}
-            onValueChange={e => console.log('value changed', e)}
+            labelStyle={{
+              color: Colors.navigatorBG,
+              marginLeft: -5,
+              fontSize: 16,
+            }}
+            value={filters.vets}
+            onValueChange={e =>
+              setFilters(prevFilters => ({...prevFilters, vets: e}))
+            }
+            // outline
+            // size={60}
           />
           <Checkbox
-            style={{margin: 10, backgroundColor: Colors.green10}}
+            style={{
+              margin: 10,
+              backgroundColor: filters.parks
+                ? Colors.navigatorBG
+                : Colors.screenBG,
+              width: 35,
+              height: 35,
+            }}
             color={Colors.navigatorBG}
             label={'גינות'}
-            labelStyle={{color: Colors.navigatorBG, marginLeft: -5}}
-            value={true}
-            onValueChange={e => console.log('value changed', e)}
+            labelStyle={{
+              color: Colors.navigatorBG,
+              marginLeft: -5,
+              fontSize: 16,
+            }}
+            value={filters.parks}
+            onValueChange={e =>
+              setFilters(prevFilters => ({...prevFilters, parks: e}))
+            }
           />
-          <Checkbox
-            style={{margin: 10, backgroundColor: Colors.green10}}
+          {/* <Checkbox
+            style={{ margin: 10, backgroundColor: Colors.green10 }}
             color={Colors.navigatorBG}
             label={'חתולים'}
-            labelStyle={{color: Colors.navigatorBG, marginLeft: -5}}
+            labelStyle={{ color: Colors.navigatorBG, marginLeft: -5,  fontSize: 16}}
             value={true}
             onValueChange={e => console.log('value changed', e)}
-          />
+          /> */}
         </View>
         <Button
           onPress={() => notify('אני בגינה', 'error')}

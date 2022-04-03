@@ -8,6 +8,7 @@ import {Navigator} from './src/pages/Navigator';
 import auth from '@react-native-firebase/auth';
 import userService from './src/services/userService';
 import {darkMap, lightMap} from './src/services/utils';
+// import SplashScreen from 'react-native-splash-screen'
 
 Colors.loadSchemes({
   light: {
@@ -55,6 +56,7 @@ const App = () => {
 
   useEffect(() => {
     auth().onAuthStateChanged(onAuthStateChanged);
+    // SplashScreen.hide()
   }, []);
 
   return (

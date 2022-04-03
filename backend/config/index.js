@@ -1,5 +1,5 @@
 const environment = process.env.NODE_ENV || 'prod';
-
+console.log(environment);
 function tryRequire(environment) {
     try {
         return require(`./${environment}`);

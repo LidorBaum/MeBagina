@@ -15,6 +15,7 @@ export function ParkPreview({
   onParkPress,
   onDogPress,
 }) {
+  console.log(parkObj.isFavorite);
   const distance = {
     pre: 'כ- ',
   };
@@ -54,7 +55,7 @@ export function ParkPreview({
     <TouchableOpacity onPress={parkPress}>
       <View style={styles.parkPreviewCont}>
         <View style={styles.parkPreviewText}>
-          <Text text30 color={Colors.textColor}>
+          <Text text60 color={Colors.textColor}>
             {parkObj.name}
           </Text>
           <Text text70 color={Colors.textColor}>
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 10,
   },
-  parkPreviewText: {alignItems: 'center', color: Colors.grey60},
+  parkPreviewText: {alignItems: 'flex-start', color: Colors.grey60},
   parkPreviewButton: {padding: 10},
   parkPreviewBtns: {flexDirection: 'row', alignItems: 'center'},
 });
